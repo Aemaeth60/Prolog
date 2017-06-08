@@ -91,7 +91,13 @@ deplacer(D, N , A) :- getPileN(D, N, L), setPile(A, L),!.
 changerTour(pion(noir)) :- retract(tour(pion(noir))),asserta(tour(pion(rouge))),!.
 changerTour(pion(rouge)) :- retract(tour(pion(rouge))), asserta(tour(pion(noir))),!.
 
-jouer(D, N , A) :- check(D , N, A), isValide(D , N), deplacer(D, N , A), tour(J), changerTour(J).
+%vérifie si la partie est terminé, le joueur courant doit être envoyé
+fin(J) :- pogo(L), fin_sub(J, L).
+fin_sub(_, []) :- !.
+fin_sub(J, [ E | R ]) :- sommet(J, E), fin_sub(J, R), !.
+fin_sub(J, [ E | R ]) :- longueur(E,0), fin_sub(J ,R).
+
+jouer(D, N , A) :- check(D , N, A), isValide(D , N), deplacer(D, N , A), tour(J), not(fin(J)), changerTour(J).
 %verifier si jeu est fini
 
 concat([],L,L).
