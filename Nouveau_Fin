@@ -68,7 +68,7 @@ longueur([_|L],N) :- longueur(L,N1), N is N1+1.
 getPileN(I , N, L) :- pogo(L2),temp(I, N ,L, L2, L3,L2), retract(pogo(L2)) ,asserta(pogo(L3)).
 getP_sub3(0, L , [] , L) :- !.
 getP_sub3(N, [E|R], [E|L], L1) :- N1 is N-1, getP_sub3(N1, R, L, L1), !.
-temp( I , N ,L, [ [I | X ] | R1 ], R,_) :- getP_sub3(N, X, L, R10), concat([I], R10, R2), concat([R2], R1, R), write(R),!. 
+temp( I , N ,L, [ [I | X ] | R1 ], R,_) :- getP_sub3(N, X, L, R10), concat([I], R10, R2), concat([R2], R1, R), !. 
 temp( I , N ,X, [ [ A | B ] | L ], [ [ A | B ] |  R ],L3) :- temp(I ,N, X ,L, R,L3), !. 
 
 %ajouter une pile de N éléments à une pile d'indice I
@@ -96,7 +96,7 @@ fin_sub( _ , 0).
 fin_sub(J, I) :- I > 0, getPile(I,L) , sommet(J, L), I2 is I-1 ,fin_sub(J, I2), !.
 fin_sub(J, I) :- I > 0, getPile(I,L), longueur(L,0), I2 is I-1, fin_sub(J ,I2).
 
-jouer(D, N , A) :- check(D , N, A), isValide(D , N), deplacer(D, N , A), tour(J), not(fin(J)), changerTour(J).
+jouer(D, N , A) :- tour(J), not(fin(J)), check(D , N, A), isValide(D , N), deplacer(D, N , A),  pogo(L), write(L), changerTour(J).
 %verifier si jeu est fini
 
 concat([],L,L).
@@ -104,5 +104,4 @@ concat([E1|R1],L,[E1|R2]) :- concat(R1,L,R2).
 %[[1,2,3],[1,2,3],[1]]
 %pogo([[1, pion(noir), pion(rouge), pion(rouge)], [2], [3, pion(noir), pion(rouge), pion(rouge)], [4], [5], [6, pion(noir), pion(rouge), pion(rouge), pion(noir)], [7], [8, pion(noir), pion(noir)], [9]]).
 %pogo([[1, pion(rouge), pion(rouge)], [2, pion(noir)], [3, pion(noir), pion(rouge), pion(rouge)], [4], [5], [6, pion(noir), pion(rouge), pion(rouge), pion(noir)], [7], [8, pion(noir), pion(noir)], [9]]).
-
 
