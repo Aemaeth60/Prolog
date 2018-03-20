@@ -1,0 +1,6 @@
+---
+
+- name: Ajout de l'utilisateur {{ nom }}
+  user:
+    name : "{{nom}}"
+    password: "{{ pass | password_hash('sha512') }}"
